@@ -13,7 +13,7 @@ router.get('/rbbt/:id', function (req, res, next) {
     mongoHandler.getSingle(mongoUrl, desiredToken, function (err, data) {
         if (err) {
             console.log(err.message);
-            return next(err);
+            next(err);
         }
         res.set('Content-Type', data.contentType);
         res.sendFile(path.normalize(__dirname + '/../' + data.path));
@@ -40,10 +40,10 @@ router.get('/', function (req, res, next) {
     mongoHandler.list(mongoUrl, function (err, data){
         if (err) {
             console.log(err.message);
-            return next(err);
+            next(err);
         }
         data.forEach(function (el) {
-        res.write(el.name.toString() +
+            res.write(el.name.toString() +
                     ': \n\t' +
                     req.protocol +
                     '://' +
@@ -56,8 +56,8 @@ router.get('/', function (req, res, next) {
     res.end('=====================');});
 });
 
-router.get('*', function (req, res, next) {
-    return next(new Error('undefined route'));
+router.get('*', function(req, res) {
+    res.redirect('/');
 });
 
 module.exports = router;
